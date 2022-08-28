@@ -1,5 +1,5 @@
 use crate::{parser::Parser, syntax_error::SyntaxError, tokenizer::tokenizer};
-use std::error;
+use std::{env, error};
 
 pub mod parser;
 pub mod syntax_error;
@@ -19,10 +19,13 @@ fn run(input: String) -> Result<u64, SyntaxError> {
 }
 
 fn main() -> Result<(), Box<dyn error::Error>> {
-    run("1c1".to_string()).unwrap();
+    let args = env::args().collect::<Vec<String>>();
+    if args.len() != 2 {
+        panic!("Not enough argument!");
+    }
 
-    let tokens = tokenizer("3a2".to_string());
-    println!("{:?}", tokens);
+    let result = run(args[1].clone()).unwrap();
+    println!("Result: {}", result);
 
     Ok(())
 }
